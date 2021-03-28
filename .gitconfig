@@ -1,0 +1,5 @@
+[user]
+	name = kosintsev
+	email = kosintsev@vivid.money
+[alias]
+	log-pretty = log --graph --date=short --branches --pretty=format:'%C(yellow)%h%C(reset) %ad | %C(75)%s%C(reset) %C(yellow)%d%C(reset) [%an]'

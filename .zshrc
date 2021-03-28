@@ -5,92 +5,30 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-# If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
+export TERM="xterm-256color"
+
+# history
+export HISTFILE=~/.zsh_history # Where it gets saved
+export HISTSIZE=10000
+export SAVEHIST=10000
+export HISTCONTROL=ignoredups
+setopt append_history # Don't overwrite, append!
+setopt INC_APPEND_HISTORY # Write after each command
+setopt hist_expire_dups_first # Expire duplicate entries first when trimming history.
+setopt hist_fcntl_lock # use OS file locking
+setopt hist_ignore_all_dups # Delete old recorded entry if new entry is a duplicate.
+setopt hist_lex_words # better word splitting, but more CPU heavy
+setopt hist_reduce_blanks # Remove superfluous blanks before recording entry.
+setopt hist_save_no_dups # Don't write duplicate entries in the history file.
+setopt share_history # share history between multiple shells
+setopt HIST_IGNORE_SPACE # Don't record an entry starting with a space.
+
+# Binds
+bindkey "^[^[[C" forward-word
+bindkey "^[^[[D" backward-word
 
 # Path to your oh-my-zsh installation.
-export ZSH="/Users/slick/.oh-my-zsh"
-
-# jenv setup [user]
-export PATH="$HOME/.jenv/bin:$PATH"
-eval "$(jenv init -)"
-
-
-# Set name of the theme to load --- if set to "random", it will
-# load a random theme each time oh-my-zsh is loaded, in which case,
-# to know which specific one was loaded, run: echo $RANDOM_THEME
-# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="powerlevel10k/powerlevel10k"
-
-# Set list of themes to pick from when loading at random
-# Setting this variable when ZSH_THEME=random will cause zsh to load
-# a theme from this variable instead of looking in ~/.oh-my-zsh/themes/
-# If set to an empty array, this variable will have no effect.
-# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
-
-# Uncomment the following line to use case-sensitive completion.
-# CASE_SENSITIVE="true"
-
-# Uncomment the following line to use hyphen-insensitive completion.
-# Case-sensitive completion must be off. _ and - will be interchangeable.
-# HYPHEN_INSENSITIVE="true"
-
-# Uncomment the following line to disable bi-weekly auto-update checks.
-# DISABLE_AUTO_UPDATE="true"
-
-# Uncomment the following line to automatically update without prompting.
-# DISABLE_UPDATE_PROMPT="true"
-
-# Uncomment the following line to change how often to auto-update (in days).
-# export UPDATE_ZSH_DAYS=13
-
-# Uncomment the following line if pasting URLs and other text is messed up.
-# DISABLE_MAGIC_FUNCTIONS=true
-
-# Uncomment the following line to disable colors in ls.
-# DISABLE_LS_COLORS="true"
-
-# Uncomment the following line to disable auto-setting terminal title.
-# DISABLE_AUTO_TITLE="true"
-
-# Uncomment the following line to enable command auto-correction.
-# ENABLE_CORRECTION="true"
-
-# Uncomment the following line to display red dots whilst waiting for completion.
-# COMPLETION_WAITING_DOTS="true"
-
-# Uncomment the following line if you want to disable marking untracked files
-# under VCS as dirty. This makes repository status check for large repositories
-# much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
-
-# Uncomment the following line if you want to change the command execution time
-# stamp shown in the history command output.
-# You can set one of the optional three formats:
-# "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
-# or set a custom format using the strftime function format specifications,
-# see 'man strftime' for details.
-# HIST_STAMPS="mm/dd/yyyy"
-
-# Would you like to use another custom folder than $ZSH/custom?
-# ZSH_CUSTOM=/path/to/new-custom-folder
-
-# Which plugins would you like to load?
-# Standard plugins can be found in ~/.oh-my-zsh/plugins/*
-# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
-plugins=(
-git
-docker
-colored-man-pages
-colorize
-zsh-syntax-highlighting
-auto-color-ls
-zsh-autosuggestions
-jenv
-ls
-)
+export ZSH="/Users/kirillosintsev/.oh-my-zsh"
 
 source $ZSH/oh-my-zsh.sh
 
@@ -98,30 +36,66 @@ source $ZSH/oh-my-zsh.sh
 
 test -e ~/.dircolors && eval `gdircolors -b ~/.dircolors`
 
-# export MANPATH="/usr/local/man:$MANPATH"
+### FZF
+export FZF_DEFAULT_OPTS="
+  --bind 'ctrl-f:page-down,ctrl-b:page-up,ctrl-o:execute(code {})+abort'
+  --color fg:102,bg:233,hl:65,fg+:15,bg+:234,hl+:108
+  --color info:108,prompt:109,spinner:108,pointer:168,marker:168
+"
 
-# You may need to manually set your language environment
-# export LANG=en_US.UTF-8
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-# Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
+# tmux
+DISABLE_AUTO_TITLE=true
 
-# Compilation flags
-# export ARCHFLAGS="-arch x86_64"
+# Zplug
+source ~/.zplug/init.zsh
+zplug "zplug/zplug", hook-build:"zplug --self-manage"
 
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
-# For a full list of active aliases, run `alias`.
-#
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
-# alias update="brew update; brew upgrade; brew cu -ay; brew cleanup; pip3 install --upgrade `pip3 list --outdated | awk 'NR>2 {print $1}'`"
+zplug "plugins/git", from:oh-my-zsh
+zplug "plugins/colorize", from:oh-my-zsh
+zplug "plugins/kubectl", from:oh-my-zsh
+zplug "plugins/helm", from:oh-my-zsh
+
+zplug "~/.zsh_custom", from:local
+
+zplug "zsh-users/zsh-syntax-highlighting", defer:2
+
+zplug "zsh-users/zsh-history-substring-search"
+if zplug check zsh-users/zsh-history-substring-search; then
+  bindkey "$terminfo[kcuu1]" history-substring-search-up
+  bindkey "$terminfo[kcud1]" history-substring-search-down
+fi
+
+# zsh-autosuggestions
+ZSH_AUTOSUGGEST_STRATEGY=(history completion)
+ZSH_AUTOSUGGEST_USE_ASYNC=true
+zplug "zsh-users/zsh-autosuggestions"
+if zplug check zsh-users/zsh-autosuggestions; then
+   ZSH_AUTOSUGGEST_CLEAR_WIDGETS+=(history-substring-search-up history-substring-search-down) 
+   # Add history-substring-search-* widgets to list of widgets that clear the autosuggestion
+   ZSH_AUTOSUGGEST_CLEAR_WIDGETS=("${(@)ZSH_AUTOSUGGEST_CLEAR_WIDGETS:#(up|down)-line-or-history}") 
+   # Remove *-line-or-history widgets from list of widgets that clear the autosuggestion to avoid conflict with history-substring-search-* widgets
+fi
+
+# Alias Tips
+zplug "djui/alias-tips"
+
+# Fast navigation (better cd)
+zplug "skywind3000/z.lua", use:z.lua.plugin.zsh
+
+# Theme
+zplug "romkatv/powerlevel10k", as:theme, depth:1
+
+# Install plugins if there are plugins that have not been installed
+#if ! zplug check --verbose; then
+#    printf "Install? [y/N]: "
+#    if read -q; then
+#        echo; zplug install
+#    fi
+#fi
+zplug load
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
