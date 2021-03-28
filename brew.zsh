@@ -28,8 +28,10 @@ brew install protobuf
 brew install tree
 brew install fzf
 brew install lua # need for z.lua
-brew istall gh
+brew install gh
 brew install awscli
+brew install jq
+brew install exa # modern ls
 
 # iaac stuff
 brew install packer
