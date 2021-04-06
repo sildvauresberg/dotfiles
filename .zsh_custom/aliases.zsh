@@ -15,3 +15,5 @@ alias tree2="tree -L 2"
 alias tree2h="tree -L 2 -h"
 alias tree3="tree -L 3"
 alias tree3h="tree -L 3 -h"
+
+alias drm="docker rmi $(docker images -f 'dangling=true' | awk '{if ($1 == "<none>") {print $3} }')"

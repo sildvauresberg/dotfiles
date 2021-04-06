@@ -28,8 +28,14 @@ brew install protobuf
 brew install tree
 brew install fzf
 brew install lua # need for z.lua
-brew istall gh
+brew install jq
+brew install yq
 brew install awscli
+brew install exa
+
+# utility
+brew install glances
+# brew install mkcert # https://github.com/FiloSottile/mkcert see PiterJS #50 on youtube
 
 # iaac stuff
 brew install packer
