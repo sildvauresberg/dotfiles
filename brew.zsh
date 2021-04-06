@@ -31,7 +31,7 @@ brew install lua # need for z.lua
 brew install jq
 brew install yq
 brew install awscli
-brew install exa
+brew install exa # modern ls
 
 # utility
 brew install glances
