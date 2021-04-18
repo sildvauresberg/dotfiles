@@ -5,7 +5,7 @@ function idea() {
 # mkdir, cd into it (via http://onethingwell.org/post/586977440/mkcd-improved)
 function mkcd () {
     mkdir -p "$*"
-    cd "$*"
+    cd "$*" || return
 }
 
 # tree
@@ -16,21 +16,21 @@ alias tree2h="tree -L 2 -h"
 alias tree3="tree -L 3"
 alias tree3h="tree -L 3 -h"
 
-alias drm="docker rmi $(docker images -f 'dangling=true' | awk '{if ($1 == "<none>") {print $3} }')"
-
-alias lll='for i in *; do echo "`ls -1aRi "$i" | awk "/^[0-9]+ / { print $1 }" | sort -u | wc -l` $i" ; done | sort -n' # https://gist.github.com/junegunn/f4fca918e937e6bf5bad
+drm() {
+  docker rmi "$(docker images -f 'dangling=true' | awk '{if ($1 == "<none>") {print $3 } ')"
+}
 
 gli() {
   # param validation
-  if [[ ! `git log -n 1 $@ | head -n 1` ]] ;then
+  if [[ ! $(git log -n 1 "$@" | head -n 1) ]] ;then
     return
   fi
 
   # filter by file string
   local filter
   # param existed, git log for file if existed
-  if [ -n $@ ] && [ -f $@ ]; then
-    filter="-- $@"
+  if [ -n "$*" ] && [ -f "$*" ]; then
+    filter="-- $*"
   fi
 
   # git command
@@ -39,7 +39,7 @@ gli() {
     --graph --color=always
     --abbrev=7
     --format='%C(auto)%h%d %an %C(blue)%s %C(yellow)%C(bold)%cr'
-    $@
+    "$@"
   )
 
   # fzf command
@@ -56,6 +56,6 @@ gli() {
   )
 
   # piping them
-  $gitlog | $fzf
+  "${gitlog[@]}" | "${fzf[@]}"
 }
 
