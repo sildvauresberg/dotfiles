@@ -35,6 +35,6 @@ endif
 install:
 	echo $CCFLAGS
 #	zsh .osx.zsh
- 	zsh .omz.zsh
+	zsh .omz.zsh
 #	 ./brew.zsh
 #	 ./link-all.zsh
