@@ -33,8 +33,7 @@ endif
 .PHONY: install
 
 install:
-	echo $CCFLAGS
 	zsh osx.zsh
 	zsh omz.zsh
 	zsh brew.zsh
-#	 ./link-all.zsh
+	zsh link-all.zsh
