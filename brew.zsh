@@ -1,5 +1,5 @@
 # homebrew
-if test ! $(which brew); then
+if test ! "$(which brew)"; then
   echo "Installing Homebrew..."
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 else
@@ -13,7 +13,7 @@ fi
 ## jdk
 brew install openjdk
 sudo ln -sfn \
-$(brew --prefix)/opt/openjdk/libexec/openjdk.jdk \
+"$(brew --prefix)"/opt/openjdk/libexec/openjdk.jdk \
 /Library/Java/JavaVirtualMachines/openjdk.jdk
 ## build tools
 brew install maven

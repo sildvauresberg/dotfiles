@@ -1,5 +1,7 @@
+.PHONY: install
+
 install:
-#	 ./.osx.zsh
-# 	 ./.omz.zsh
-#	 ./brew.zsh
-#	 ./link-all.zsh
+	zsh osx.zsh
+	zsh omz.zsh
+	zsh brew.zsh
+	zsh link-all.zsh
