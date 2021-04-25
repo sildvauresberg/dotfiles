@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+if [[ "$OSTYPE" != "darwin"*  ]]; then
+  echo "OS X config step will be skipped";
+  exit;
+fi
+
 # Disable the sound effects on boot
 sudo nvram SystemAudioVolume=" "
 
