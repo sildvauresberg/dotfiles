@@ -1,0 +1,84 @@
+# If not running interactively, do not do anything
+[[ $- != *i* ]] && return
+
+# Basic exports
+export LANG="en_US.UTF-8"
+export TERM="xterm-256color"
+
+# Enable colors
+test -e ~/.dircolors && command -v gdircolors &> /dev/null && eval `gdircolors -b ~/.dircolors`
+
+# ZSH settings
+export DISABLE_AUTO_TITLE=true
+export COMPLETIONS_WAITING_DOTS=false
+export HIST_STAMPS="dd.mm.yyyy"
+export HISTSIZE=5000
+export SAVEHIST=5000
+export HISTFILE=~/.zsh_history
+export HISTCONTROL=ignoredups
+setopt hist_ignore_space # Do not record an entry starting with a space
+setopt append_history # Do no overwrite, append
+setopt share_history # Share history between multiple shells
+setopt inc_append_history # Write after each command
+setopt hist_expire_dups_first # Expire duplicate entries first when trimming history
+setopt hist_fcntl_lock # Use OS file locking
+setopt hist_ignore_all_dups # Delete old recorded entry if new entry is a duplicate
+setopt hist_lex_words # Better word splitting, but more CPY heavy
+setopt hist_reduce_blanks # Remove superfluous blanks before recording entry
+setopt hist_save_no_dups # Do not write duplicate entries in the history file
+
+# CD-ing settings
+setopt auto_cd # automatically CD if folder name and no command found
+setopt auto_list # automatically list choices on ambiguous completion
+setopt auto_menu # automatically use menu completion
+setopt always_to_end # move cursor to end if word had one match
+setopt interactive_comments # allow comments in interactive shells
+
+# Bindings
+bindkey ";3C" forward-word
+bindkey ";3D" backward-word
+
+# Enable select completions with arrow keys
+zstyle ':completion:*' menu select
+# Enable auto complete case insenstivity
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' #'r:|[._-]=* r:|=* l:|=* r:|=*'
+zstyle ':completion:*' list-colors $LS_COLORS
+# Enable approximate matches for completion
+zstyle ':completion:::::' completer _expand _complete _ignored _approximate 
+
+
+# Enable autocompletions
+autoload -Uz compinit
+zmodload zsh/complist
+compinit
+_comp_options+=(globdots) # Include hidden files
+
+# ZSH autosuggestions settings
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=244"
+ZSH_AUTOSUGGEST_STRATEGY=(history completion)
+ZSH_AUTOSUGGEST_USE_ASYNC="true"
+
+# Sourcing plugins
+source ~/Downloads/zshrc/z/z.sh
+source ~/Downloads/zshrc/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh
+source ~/Downloads/zshrc/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh
+
+# Source custom exports, aliases & functions
+for f in ~/.zsh_custom/*; do source "$f"; done
+
+# Source fzf
+export FZF_DEFAULT_OPTS="
+  -1 -0
+  --prompt=''
+  --inline-info
+  --reverse --height '40%'
+  --bind 'ctrl-f:page-down,ctrl-b:page-up,ctrl-o:execute(code {})+abort'
+  --color fg:102,bg:233,hl:65,fg+:15,bg+:234,hl+:108
+  --color info:108,prompt:242,spinner:108,pointer:1,marker:168
+"
+test -f ~/.fzf.zsh && source ~/.fzf.zsh
+
+# Configure prompt
+export STARSHIP_CONFIG=~/.starship.toml
+eval "$(starship init zsh)"
+
